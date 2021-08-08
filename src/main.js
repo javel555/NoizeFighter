@@ -1,15 +1,18 @@
-import {MersenneTwister} from 'random-seedable';
+// import Random from 'random-seedable';
+var Random = require('random-seedable');
+var SimplexNoise = require('simplex-noise');
 
-console.log("test");
+console.log("NoizeFighter");
 
 //
 // Const
 //
-const RESOLUTION = 8;
-const DISPLAY_SIZE = 128;
-const IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
-const DISPLAY_SCALE = DISPLAY_SIZE / RESOLUTION;
-const SEED = Date.now();
+let RESOLUTION = 8;
+let DISPLAY_SIZE = 128;
+let IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
+let SEED = Date.now();
+
+let USE_PARIN = false;
 
 //
 // Initialize
@@ -23,7 +26,7 @@ const SEED = Date.now();
 // const CTX = Canvas.getContext('2d');
 // CTX.imageSmoothingEnabled = false;
 
-const Random = new MersenneTwister();
+const Parin = new SimplexNoise();
 
 
 //
@@ -34,8 +37,18 @@ function random(row, col, i){
     return value < 0.5 ? 0 : 1;
 }
 
+function parin(row, col, i){
+    const freq = 0.08;
+    const value = Parin.noise3D(row * freq, col * freq, SEED + SEED * i);
+    return value < 0.5 ? 0 : 1;
+}
+
 function generate(row, col, i){
-    return random(row, col, i);
+    if(USE_PARIN){
+        return parin(row, col, i);
+    }else{
+        return random(row, col, i);
+    }
 }
 
 //
@@ -65,7 +78,11 @@ function hitTriangle(col, row){
     const b2 = cross(col,row, p1[x],p1[y], p2[x],p2[y]) < 0;
     const b3 = cross(col,row, p2[x],p2[y], p0[x],p0[y]) < 0;
 
-    return ((b1 == b2) && (b2 == b3));
+    if((b1 == b2) && (b2 == b3)){
+        return 1;
+    }else{
+        return 0;
+    }
 
 // const area = 0.5 * (-p1[y]*p2[x] + p0[y]*(-p1[x]+p2[x]) + p0[x]*(p1[y]-p2[y]) + p1[x]*p2[y]);
 // const s = 1/(2*area) * (p0[y]*p2[x] - p0[x]*p2[y] + (p2[y]-p0[y])*col + (p0[x]-p2[x])*row);
@@ -109,7 +126,7 @@ function createImage(vari, type){
     const canvas = document.createElement("canvas");
     canvas.width = DISPLAY_SIZE;
     canvas.height = DISPLAY_SIZE;
-    canvas.style.border = 'solid #fff 3px';
+    // canvas.style.border = 'solid #fff 3px';
     parent.appendChild(canvas);
 
     const _ctx = canvas.getContext("2d");
@@ -126,7 +143,7 @@ function createImage(vari, type){
         myAlpha.push(alpha);
     }
     // console.log(myImage);
-    console.log(myAlpha);
+    // console.log(myAlpha);
 
     const imageData = _ctx.createImageData(RESOLUTION, RESOLUTION);
     for(let i=0; i < imageData.data.length; i+= 4){
@@ -149,7 +166,7 @@ function createImage(vari, type){
 // Utility
 //
 function seedRandom(seedA, seedB=0, seedC=0){
-    let seed = seedA * seedB * seedC;
+    let seed = seedA * seedB * seedC * seedC;
     Random.seed = seed;
     return Random.float();
 }
@@ -166,15 +183,25 @@ function cross(p1x,p1y, p2x,p2y, p3x,p3y){
 //
 // Event
 //
-// const button = document.querySelector('button#generate_btn');
-// button.addEventListener('click', ()=>createImage(CTX));
+function start(){
+    RESOLUTION = 8;
+    DISPLAY_SIZE = 128;
+    IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
+    SEED = Date.now();
 
-for(let i=0; i < 5; i++){
-    createImage(i, 0);
+    document.querySelector("#body").innerHTML = "";
+
+    let lineup = 8;
+
+    for(let i=0; i < lineup; i++){
+        createImage(i, 0);
+    }
+    for(let i=0; i < lineup; i++){
+        createImage(i, 1);
+    }
+    for(let i=0; i < lineup; i++){
+        createImage(i, 2);
+    }    
 }
-for(let i=0; i < 5; i++){
-    createImage(i, 1);
-}
-for(let i=0; i < 5; i++){
-    createImage(i, 2);
-}
+window.start = start;
+start();
