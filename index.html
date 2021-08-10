@@ -5,6 +5,10 @@
    <!-- モバイル向け -->
    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
    <style>
+      ::-webkit-scrollbar{width: 2px;}
+      ::-webkit-scrollbar-track{background-color: cornflowerblue;}
+      ::-webkit-scrollbar-thumb{background-color: rgba(255,255,255,0.8);}
+      ::-webkit-scrollbar-button{background-color: rgba(255,255,255,0.8); height: 46px; }
       body{
           background-color: cornflowerblue;
           line-height: 0px;
@@ -26,13 +30,15 @@
         color: cornflowerblue;
         border: solid cornflowerblue;
         background-color: white;
+        margin: 0;
       }
       #header{
           position: fixed;
           top: 0px;
           line-height: normal;
-          padding: 1vh;
+          padding: 10px;
           width: 100%;
+          height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
       #body{
@@ -42,8 +48,9 @@
           position: fixed;
           bottom: 0px;
           line-height: normal;
-          padding: 1vh 0;
+          padding: 10px 0;
           width: 100%;
+          height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
    </style>
@@ -53,10 +60,13 @@
         <div id="header">
           <div style="float: left;">謎模様ジェネレータ２<span style="font-size: 14px;">～インベーダーっぽいもの生成器～</span></div>
           <div style="float: right; padding-right: 2vh;">
-            <span>vertical</span><input type="checkbox" id="vertical" checked>
-            <span>cell</span><input type="number" id="cell" max="14" min="5" value="7" style="width: 5vh;">
-            <input type="button" onclick="window.__reset();" value="Reset">
-            <input type="button" onclick="window.alert('右クリックから名前を付けて保存！')" value="?">
+            <table style="display: table;"><tr>
+                <td><span>vertical</span><input type="checkbox" id="vertical" checked></td>
+                <td><span>cell</span><input type="number" id="cell" max="14" min="5" value="7" style="width: 5vh;"></td>
+                <td><input type="button" onclick="window.__reset();" value="Reset"></td>
+                <td style="width: 1vh;"></td>
+                <td><input type="button" onclick="window.alert('右クリックから名前を付けて保存！')" value="?"></td>
+            </tr></table>
           </div>
         </div>
         <div id="body"></div>
