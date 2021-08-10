@@ -99,6 +99,7 @@ function createImage(vari, type){
     const canvas = document.createElement("canvas");
     canvas.width = DISPLAY_SIZE;
     canvas.height = DISPLAY_SIZE;
+    // canvas.onclick = toggle;
     parent.appendChild(canvas);
 
     const _ctx = canvas.getContext("2d");
@@ -232,4 +233,15 @@ window.__reset = function(){
     const parent = document.querySelector("#body");
     parent.innerHTML = "";
     start();
+}
+
+// for canvas
+function toggle(){
+    console.log(this.style.backgroundColor);
+    if(this.style.backgroundColor == "lightsalmon"){
+        this.style.backgroundColor="";
+    }else{
+        this.style.backgroundColor="lightsalmon";
+    }
+
 }

@@ -41,6 +41,12 @@
           height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
+      h1{
+        margin: 0;
+        font-size: 100%;
+        padding: 0 1vh;
+        /* background-color: white; */
+      }
       #body{
         padding-top: 6vh;
       }
@@ -53,12 +59,19 @@
           height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
+      #scrollbtn{
+        cursor: pointer;
+        border: solid cornflowerblue;
+        padding: 0 1vh;
+        background-color: white;
+      }
    </style>
  </head>
  <body>
    <div id="contents">
         <div id="header">
-          <div style="float: left;">謎模様ジェネレータ２<span style="font-size: 14px;">～インベーダーっぽいもの生成器～</span></div>
+          <!-- <div style="float: left;"><h1>謎模様ジェネレータ２<span style="font-size: 14px;">～インベーダーっぽいもの生成器～</span></h1></div> -->
+          <div style="float: left;"><h1>インベーダーっぽいもの生成器</h1></div>
           <div style="float: right; padding-right: 2vh;">
             <table style="display: table;"><tr>
                 <td><span>vertical</span><input type="checkbox" id="vertical" checked></td>
@@ -70,7 +83,7 @@
           </div>
         </div>
         <div id="body"></div>
-        <div id="footer"><a onclick="window.start();" style="cursor: pointer;"><u>V V V V V V V V</u></a></div>
+        <div id="footer"><a id="scrollbtn" onclick="window.start();">V V V V V V V V</a></div>
    </div>
    <script type="text/javascript" src="dist/bundle.js"></script>
  </body>
