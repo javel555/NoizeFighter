@@ -7,26 +7,18 @@ console.log("NoizeFighter");
 //
 // Const
 //
-let RESOLUTION = 8;
-let DISPLAY_SIZE = 128;
-let IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
-let SEED = Date.now();
+const Parin = new SimplexNoise();
+const USE_PARIN = false;
 
-let USE_PARIN = false;
 
 //
 // Initialize
 //
-// const Canvas = document.createElement('canvas');
-// Canvas.width = DISPLAY_SIZE;
-// Canvas.height = DISPLAY_SIZE;
-// Canvas.style.border = 'solid #fff 3px';
-// document.querySelector("#body").appendChild(Canvas);
-
-// const CTX = Canvas.getContext('2d');
-// CTX.imageSmoothingEnabled = false;
-
-const Parin = new SimplexNoise();
+let RESOLUTION;
+let DISPLAY_SIZE;
+let IMAGE_DATA_SIZE;
+let VERTICAL;
+let SEED;
 
 
 //
@@ -56,7 +48,7 @@ function generate(row, col, i){
 //
 function hitRect(col, row){
     const res = RESOLUTION - 1;
-    return (0 < col && col < res && 0 < row && row < res) ? 1 : 0;
+    return (0 <= col && col <= res && 0 <= row && row <= res) ? 1 : 0;
 }
 function hitCircle(col, row){
     const r = (RESOLUTION - 1) / 2;
@@ -83,26 +75,6 @@ function hitTriangle(col, row){
     }else{
         return 0;
     }
-
-// const area = 0.5 * (-p1[y]*p2[x] + p0[y]*(-p1[x]+p2[x]) + p0[x]*(p1[y]-p2[y]) + p1[x]*p2[y]);
-// const s = 1/(2*area) * (p0[y]*p2[x] - p0[x]*p2[y] + (p2[y]-p0[y])*col + (p0[x]-p2[x])*row);
-// const t = 1/(2*area) * (p0[x]*p1[y] - p0[y]*p1[x] + (p0[y]-p1[y])*col + (p1[x]-p0[x])*row);
-// if((0 < s < 1) && (0 < t < 1) && (0 < 1-s-t < 1)){
-//     return 1;
-// }else{
-//     return 0;
-// }
-    /*
-double Area = 0.5 *(-p1y*p2x + p0y*(-p1x + p2x) + p0x*(p1y - p2y) + p1x*p2y);
-double s = 1/(2*Area)*(p0y*p2x - p0x*p2y + (p2y - p0y)*px + (p0x - p2x)*py);
-double t = 1/(2*Area)*(p0x*p1y - p0y*p1x + (p0y - p1y)*px + (p1x - p0x)*py);
- 
-if((0 < s < 1) && (0 < t < 1)&&(0<1-s-t<1)){
-    return 1; //Inside Triangle
-}else{
-    return 0;
-}
-    */
 }
 
 function hitTest(col, row, type){
@@ -120,13 +92,13 @@ function hitTest(col, row, type){
 // Create Image
 //
 function createImage(vari, type){
+    const seed = Math.random();
     const parent = document.querySelector("#body");
-    if(vari == 0) parent.appendChild(document.createElement("br"));
+    // if(vari == 0) parent.appendChild(document.createElement("br"));
 
     const canvas = document.createElement("canvas");
     canvas.width = DISPLAY_SIZE;
     canvas.height = DISPLAY_SIZE;
-    // canvas.style.border = 'solid #fff 3px';
     parent.appendChild(canvas);
 
     const _ctx = canvas.getContext("2d");
@@ -135,15 +107,23 @@ function createImage(vari, type){
     const myImage = [];
     const myAlpha = [];
     for(let i = 0; i < IMAGE_DATA_SIZE; i++){
-        const col = Math.floor(i % RESOLUTION);
-        const row = Math.floor(i / RESOLUTION);
-        let color = generate(col, flip(row, RESOLUTION), vari+type);
+        let col = Math.floor(i % RESOLUTION);
+        let row = Math.floor(i / RESOLUTION);
+        if(VERTICAL){ const t = col; col = row; row = t; }
+        let color = generate(col, flip(row, RESOLUTION), seed);
         myImage.push(color);
         let alpha = hitTest(col, row, type);
         myAlpha.push(alpha);
     }
     // console.log(myImage);
     // console.log(myAlpha);
+
+    const checked = new Array(IMAGE_DATA_SIZE);
+    for(let col = 0; col < RESOLUTION; col++){
+        for(let row = 0; row < RESOLUTION; row++){
+            triming(checked, myImage, myAlpha, col, row);
+        }
+    }    
 
     const imageData = _ctx.createImageData(RESOLUTION, RESOLUTION);
     for(let i=0; i < imageData.data.length; i+= 4){
@@ -180,18 +160,51 @@ function cross(p1x,p1y, p2x,p2y, p3x,p3y){
     return  (p1x-p3x) * (p2y-p3y) - (p2x-p3x) * (p1y-p3y);
 }
 
+function triming(checked, myImage, myAlpha, col, row){
+    // 0:消す 1:残す
+    if(col < 0 || col > RESOLUTION) return 0;
+    if(row < 0 || row > RESOLUTION) return 0;
+    const idx = (row * RESOLUTION) + col;
+    const alpha = myAlpha[idx];
+    if(alpha == 0) return 0;
+    const color = myImage[idx];
+    if(color == 1) return 1;
+    if(checked[idx] == true) return -1;
+    checked[idx] = true;
+    const u = triming(checked, myImage, myAlpha, col, row-1);
+    if(u == 0) {myAlpha[idx] = 0; return 0; }
+    const r = triming(checked, myImage, myAlpha, col+1, row);
+    if(r == 0) {myAlpha[idx] = 0; return 0; }
+    const l = triming(checked, myImage, myAlpha, col-1, row);
+    if(l == 0) {myAlpha[idx] = 0; return 0; }
+    const d = triming(checked, myImage, myAlpha, col, row+1);
+    if(d == 0) {myAlpha[idx] = 0; return 0; }
+    checked[idx] = false;
+    return 1;
+}
+
+function getWindowHeight(){
+    return Math.max(
+        document.body.scrollHeight, document.documentElement.scrollHeight,
+        document.body.offsetHeight, document.documentElement.offsetHeight,
+        document.body.clientHeight, document.documentElement.clientHeight
+    );
+}
+
 //
 // Event
 //
 function start(){
-    RESOLUTION = 8;
-    DISPLAY_SIZE = 128;
+    RESOLUTION = document.querySelector("#cell").value || 7;
+    DISPLAY_SIZE = 96;
     IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
+    VERTICAL = document.querySelector("#vertical").checked;
+    console.log(VERTICAL);
     SEED = Date.now();
 
-    document.querySelector("#body").innerHTML = "";
+    // document.querySelector("#body").innerHTML = "";
 
-    let lineup = 8;
+    let lineup = 100;
 
     for(let i=0; i < lineup; i++){
         createImage(i, 0);
@@ -205,3 +218,18 @@ function start(){
 }
 window.start = start;
 start();
+
+window.addEventListener("scroll", ()=>{
+    const scrollTop = Math.ceil(window.pageYOffset || document.documentElement.scrollTop);
+    const pageMostBottom = getWindowHeight() - window.innerHeight;
+    if (scrollTop >= pageMostBottom) {
+        start();
+    }
+});
+
+window.__reset = function(){
+    window.scroll(0,0);
+    const parent = document.querySelector("#body");
+    parent.innerHTML = "";
+    start();
+}
