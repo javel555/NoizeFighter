@@ -204,7 +204,7 @@ function start(){
 
     // document.querySelector("#body").innerHTML = "";
 
-    let lineup = 100;
+    let lineup = 30;
 
     for(let i=0; i < lineup; i++){
         createImage(i, 0);
