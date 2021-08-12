@@ -268,4 +268,8 @@ window.__toggleHelp = function(){
     else
         overlay.style.display = "none";
 }
-setTimeout(__toggleHelp, 3000);
+setTimeout(()=>{
+    const overlay = document.querySelector("#overlay");
+    if(overlay.style.display == "none") return;
+    window.__toggleHelp();
+}, 3000);
