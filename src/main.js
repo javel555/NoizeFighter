@@ -197,7 +197,7 @@ function getWindowHeight(){
 //
 function start(){
     RESOLUTION = document.querySelector("#cell").value || 7;
-    DISPLAY_SIZE = 96;
+    DISPLAY_SIZE = document.querySelector("#res").value;
     IMAGE_DATA_SIZE = RESOLUTION * RESOLUTION;
     VERTICAL = document.querySelector("#vertical").checked;
     console.log(VERTICAL);

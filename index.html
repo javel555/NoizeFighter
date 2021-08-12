@@ -26,11 +26,12 @@
       span{
         margin: 0px 4px;
       }
-      input{
+      input, select{
         color: cornflowerblue;
         border: solid cornflowerblue;
         background-color: white;
         margin: 0;
+        vertical-align: top;
       }
       #header{
           position: fixed;
@@ -74,8 +75,17 @@
           <div style="float: left;"><h1>インベーダーっぽいもの生成器</h1></div>
           <div style="float: right; padding-right: 2vh;">
             <table style="display: table;"><tr>
-                <td><span>vertical</span><input type="checkbox" id="vertical" checked></td>
-                <td><span>cell</span><input type="number" id="cell" max="14" min="5" value="7" style="width: 5vh;"></td>
+                <td><span>Vertical</span><input type="checkbox" id="vertical" checked></td>
+                <td><span>Cell</span><input type="number" id="cell" max="14" min="5" value="7" style="width: 5vh;"></td>
+                <td><span>Resolution</span><select id="res">
+                  <option value="16">16</option>
+                  <option value="32">32</option>
+                  <option value="64">64</option>
+                  <option value="96">96</option>
+                  <option value="128" selected>128</option>
+                  <option value="256">256</option>
+                  <option value="512">512</option>
+                </select></td>
                 <td><input type="button" onclick="window.__reset();" value="Reset"></td>
                 <td style="width: 1vh;"></td>
                 <td><input type="button" onclick="window.alert('右クリックから名前を付けて保存！')" value="?"></td>
