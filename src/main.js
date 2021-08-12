@@ -60,21 +60,29 @@ function hitTriangle(col, row){
     // see also: http://www.thothchildren.com/chapter/5b267a436298160664e80763
     const width = RESOLUTION - 1;
     const r = width / 2;
-    const p0 = [1,1]
-    const p1 = [width+1,r];
-    const p2 = [1,width-1];
+    const p0 = [0,0]
+    const p1 = [width,r];
+    const p2 = [0,width];
     const x = 0;
     const y = 1;
 
-    const b1 = cross(col,row, p0[x],p0[y], p1[x],p1[y]) < 0;
-    const b2 = cross(col,row, p1[x],p1[y], p2[x],p2[y]) < 0;
-    const b3 = cross(col,row, p2[x],p2[y], p0[x],p0[y]) < 0;
+    const b1 = cross(col,row, p0[x],p0[y], p1[x],p1[y]) <= 0;
+    const b2 = cross(col,row, p1[x],p1[y], p2[x],p2[y]) <= 0;
+    const b3 = cross(col,row, p2[x],p2[y], p0[x],p0[y]) <= 0;
 
     if((b1 == b2) && (b2 == b3)){
         return 1;
     }else{
         return 0;
     }
+}
+
+function hitInvader(col, row){
+    const aspect = 6/11;
+    const height = RESOLUTION - 1;
+    const width = height * aspect; // 横向きであることに注意
+    const margin = (RESOLUTION - width) / 2;
+    return (margin <= col && col <= margin+width && 0 <= row && row <= height) ? 1 : 0;
 }
 
 function hitTest(col, row, type){
@@ -85,6 +93,8 @@ function hitTest(col, row, type){
             return hitCircle(col, row);
         case 2:
             return hitTriangle(col, row);
+        case 3:
+            return hitInvader(col, row);
     }
 }
 
@@ -205,7 +215,7 @@ function start(){
 
     // document.querySelector("#body").innerHTML = "";
 
-    let lineup = 30;
+    let lineup = 20;
 
     for(let i=0; i < lineup; i++){
         createImage(i, 0);
@@ -215,6 +225,9 @@ function start(){
     }
     for(let i=0; i < lineup; i++){
         createImage(i, 2);
+    }    
+    for(let i=0; i < lineup; i++){
+        createImage(i, 3);
     }    
 }
 window.start = start;
