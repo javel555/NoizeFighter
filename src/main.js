@@ -231,7 +231,9 @@ function start(){
     }    
 }
 window.start = start;
-start();
+setTimeout(start, 0);
+setTimeout(start, 50);
+setTimeout(start, 100);
 
 window.addEventListener("scroll", ()=>{
     const scrollTop = Math.ceil(window.pageYOffset || document.documentElement.scrollTop);
@@ -266,3 +268,4 @@ window.__toggleHelp = function(){
     else
         overlay.style.display = "none";
 }
+setTimeout(__toggleHelp, 3000);
