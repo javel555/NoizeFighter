@@ -1,14 +1,20 @@
 <!DOCTYPE html>
- <html lang='ja'>
- <head>
-   <meta charset="utf-8">
-   <!-- モバイル向け -->
-   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-   <style>
+  <html lang='ja'>
+  <head>
+    <meta charset="utf-8">
+    <!-- モバイル向け -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>インベーダーっぽいもの生成器</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+1p:wght@300&display=swap" rel="stylesheet">
+    <style>
       ::-webkit-scrollbar{width: 2px;}
       ::-webkit-scrollbar-track{background-color: cornflowerblue;}
       ::-webkit-scrollbar-thumb{background-color: rgba(255,255,255,0.8);}
       ::-webkit-scrollbar-button{background-color: rgba(255,255,255,0.8); height: 46px; }
+      .wf-dotgothic {font-family: 'DotGothic16', sans-serif; }
+      .wf-mplus1p {font-family: 'M PLUS 1p', sans-serif; }
       body{
           background-color: cornflowerblue;
           line-height: 0px;
@@ -32,9 +38,10 @@
         background-color: white;
         margin: 0;
         vertical-align: top;
+        font-family: inherit;
       }
       input[type="checkbox"] {
-        height: 20px;
+        height: 2em;
       }
       #header{
           position: fixed;
@@ -45,14 +52,37 @@
           height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
-      h1{
+      #header h1{
         margin: 0;
         font-size: 100%;
+        font-weight: normal;
         padding: 0 1vh;
+        letter-spacing: 6px;
         /* background-color: white; */
       }
       #body{
         padding-top: 6vh;
+      }
+      #overlay{
+        position: fixed;
+        top: 80px;
+        line-height: normal;
+        padding: 10px;
+        width:80%;
+        margin: 0 10%;
+        background-color: rgba(255,255,255,0.8);
+        /* border: solid 4px cornflowerblue; */
+      }
+      #overlay ul, #overlay table{
+        background-color: rgba(255,255,255,0.8);
+      }
+      #overlay table, #overlay tr, #overlay td{
+        border-collapse: collapse;
+        border:1px solid cornflowerblue;
+        padding: 2px 1em;
+      }
+      #overlay video {
+        margin: 2vh;
       }
       #footer{
           position: fixed;
@@ -69,10 +99,10 @@
         padding: 0 1vh;
         background-color: white;
       }
-   </style>
- </head>
- <body>
-   <div id="contents">
+    </style>
+  </head>
+  <body class="wf-dotgothic">
+    <div id="contents">
         <div id="header">
           <!-- <div style="float: left;"><h1>謎模様ジェネレータ２<span style="font-size: 14px;">～インベーダーっぽいもの生成器～</span></h1></div> -->
           <div style="float: left;"><h1>インベーダーっぽいもの生成器</h1></div>
@@ -91,13 +121,33 @@
                 </select></td>
                 <td><input type="button" onclick="window.__reset();" value="Reset"></td>
                 <td style="width: 1vh;"></td>
-                <td><input type="button" onclick="window.alert('右クリックから名前を付けて保存！')" value="?"></td>
+                <td><input type="button" onclick="window.__toggleHelp();" value="?"></td>
             </tr></table>
           </div>
         </div>
+        <div id="overlay">
+          <div style="text-align: left; margin:auto; width: fit-content; float:left;">
+            <ul>
+              <li>気に入った画像を右クリックして「名前を付けて画像を保存」</li>
+              <li>一番下までスクロールすると新たに画像を生成</li>
+              <li>スクロール出来ない場合は矢印を押してね</li>
+            </ul>
+            <table>
+              <tr><td>Vertical</td><td>チェックを入れると下向きに。チェックを外すと右向きに。</td></tr>
+              <tr><td>Cell</td><td>画像のセルの数。値が大きいほど細かい画像に。</td></tr>
+              <tr><td>Resolution</td><td>画像の解像度。値が大きいほど大きい画像に。</td></tr>
+              <tr><td>Reset</td><td>表示されてる画像を消す。</td></tr>
+            </table>  
+          </div>
+          <div style="margin:auto; float:right">
+            <video id="demo" src="public/demo.mp4" type="video/mp4" autoplay loop muted></video>
+          </div>
+          <br style="clear: both;">
+          <input type="button" onclick="window.__toggleHelp();" value="Close"></div>
+        </div>
         <div id="body"></div>
-        <div id="footer"><a id="scrollbtn" onclick="window.start();">V V V V V V V V</a></div>
-   </div>
-   <script type="text/javascript" src="dist/bundle.js"></script>
- </body>
- </html>
+        <div id="footer"><input type="button" onclick="window.start()" value="V V V V V V V V"></div>
+    </div>
+    <script type="text/javascript" src="dist/bundle.js"></script>
+  </body>
+</html>

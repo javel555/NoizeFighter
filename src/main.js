@@ -237,11 +237,19 @@ window.__reset = function(){
 
 // for canvas
 function toggle(){
-    console.log(this.style.backgroundColor);
+    // console.log(this.style.backgroundColor);
     if(this.style.backgroundColor == "lightsalmon"){
         this.style.backgroundColor="";
     }else{
         this.style.backgroundColor="lightsalmon";
     }
+}
 
+// for help
+window.__toggleHelp = function(){
+    const overlay = document.querySelector("#overlay");
+    if(overlay.style.display == "none")
+        overlay.style.display = "block";
+    else
+        overlay.style.display = "none";
 }
