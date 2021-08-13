@@ -101,6 +101,11 @@
           height: 26px;
           background-color: rgba(255,255,255,0.8);
       }
+      #footer #author {
+        float:right;
+        font-size: 12px;
+        margin: 2vh 2vh 0 0;
+      }
       #scrollbtn{
         cursor: pointer;
         border: solid cornflowerblue;
@@ -138,7 +143,7 @@
             <ul>
               <li>気に入った画像を右クリックして「名前を付けて画像を保存」</li>
               <li>一番下までスクロールすると新たに画像を生成</li>
-              <li>スクロール出来ない場合は矢印を押してね</li>
+              <li>スクロール出来ない場合は下にある<input type="button" onclick="window.start()" value="V V V V V V V V">を押してね</li>
             </ul>
             <table>
               <tr><td>Vertical</td><td>チェックを入れると下向きに。チェックを外すと右向きに。</td></tr>
@@ -154,7 +159,10 @@
           <input type="button" onclick="window.__toggleHelp();" value="Close"></div>
         </div>
         <div id="body"></div>
-        <div id="footer"><input type="button" onclick="window.start()" value="V V V V V V V V"></div>
+        <div id="footer">
+          <input type="button" onclick="window.start()" value="V V V V V V V V">
+          <div id="author">author: <a href="https://twitter.com/home">@javel</a> 2021</div>
+        </div>
     </div>
     <script type="text/javascript" src="dist/bundle.js"></script>
   </body>
