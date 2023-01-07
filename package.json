@@ -1,0 +1,29 @@
+{
+  "name": "noizefighter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rollup.config.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javel555/NoizeFighter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/javel555/NoizeFighter/issues"
+  },
+  "homepage": "https://github.com/javel555/NoizeFighter#readme",
+  "dependencies": {
+    "random-seedable": "^1.0.8",
+    "rollup": "^3.9.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "simplex-noise": "^4.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0"
+  }
+}
